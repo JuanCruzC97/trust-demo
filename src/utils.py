@@ -2,10 +2,10 @@ from spacy import displacy
 import streamlit as st
 from io import StringIO
 import pickle
-from trustmonitor import import_utils
+#from trustmonitor import import_utils
 
 
-ROOT = import_utils.get_project_root()
+#ROOT = import_utils.get_project_root()
 
 # Por ahora cambiando el default se aplica en todas las páginas.
 # Esto debería ser una variable de configuración.
