@@ -10,7 +10,7 @@ ROOT = import_utils.get_project_root()
 # Por ahora cambiando el default se aplica en todas las páginas.
 # Esto debería ser una variable de configuración.
 @st.cache_resource
-def set_data_path(v: int=3):
+def set_data_path(v: int=4):
     
     if v == 1:
         return 'data/v1/noticias_demo_analizadas.pkl'
@@ -20,6 +20,8 @@ def set_data_path(v: int=3):
         return 'data/v3/corpus_lavoz_politica_negocios_5_srcs.pkl'
         #return f"{ROOT}/data/pickle_files/corpus_lavoz_politica_negocios_5_srcs.pkl"
     
+    elif v == 4:
+        return 'data/v4/corpus_lavoz_pn_001_04.pkl'
     
     return None
 
@@ -102,6 +104,9 @@ def plot_sources(text, sources_list, annotation_type: str="simple"):
     
     elif annotation_type == 'complete':
         sources_to_plot = [{'start':c['start_char'], 'end':c['end_char'], 'label':c['label']} for s in sources_list for c in s["components"].values()]
+        
+    elif annotation_type == 'manual':
+        sources_to_plot = [{'start':s['start_char'], 'end':s['end_char'], 'label':s['type']} for s in sources_list if 'from_id' not in s.keys()]
         
     else:
         raise ValueError("Invalid annotation type")

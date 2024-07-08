@@ -17,12 +17,18 @@ st.title("Trust - Sources")
 with st.container(border=True):
     dw_article = st.selectbox('Seleccionar un artículo', (title_choices.keys()), format_func=lambda x: f'{x} - {title_choices.get(x)}')
     
-with st.container(border=True):
-    dw_source_annotation_type = st.selectbox('Seleccionar un método de anotación', (['simple', 'complete']), format_func=lambda x: x.capitalize())
-
-    #dw_attribute = st.selectbox('Seleccionar un modalidad de detección', ("Automático", "Manual"))
 
 article = corpus.get_article(dw_article)
+
+annotation_options = ['automatic'] + list(article.manual_annotations.sources.keys())
+
+with st.container(border=True):
+    dw_source_detection = st.selectbox('Seleccionar un método de anotación', (annotation_options))
+    
+# with st.container(border=True):
+#     dw_source_annotation_type = st.selectbox('Seleccionar un método de anotación', (['simple', 'complete']), format_func=lambda x: x.capitalize())
+
+    #dw_attribute = st.selectbox('Seleccionar un modalidad de detección', ("Automático", "Manual"))
 
 col1, col2 = st.columns([3, 1])
 
@@ -32,7 +38,14 @@ with col1:
     #text = article.nlp_annotations.doc["spacy_stanza"].text   #Modificado en el import.
     #tags = article.nlp_annotations.sources["spacy_stanza"]
     text = article.cuerpo
-    tags = article.nlp_annotations.sources["stanza"]
+    
+    if dw_source_detection == "automatic":
+        tags = article.nlp_annotations.sources["stanza"]
+        dw_source_annotation_type = 'complete'
+    
+    else:
+        tags = article.manual_annotations.sources[dw_source_detection]
+        dw_source_annotation_type = 'manual'
     #print(tags)
         
     
@@ -44,6 +57,7 @@ with col1:
         prop_sources_con_fuente = 0
     
     
+    #html = utils.plot_sources(text, tags, annotation_type=dw_source_annotation_type)
     html = utils.plot_sources(text, tags, annotation_type=dw_source_annotation_type)
 
     st.header(article.titulo)
