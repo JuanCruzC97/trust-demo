@@ -8,9 +8,11 @@ st.set_page_config(layout="wide")
 # annotations = import_utils.import_label_studio_annotations(filepath, "entities")
 
 filepath = utils.set_data_path()
-corpus = utils.import_corpus_pickle(filepath)
+#corpus = utils.import_corpus_pickle(filepath)
+corpus = utils.import_corpus_json(filepath)
 
-title_choices = {index:article.titulo for index, article in corpus.articles.items()}
+#title_choices = {index:article.titulo for index, article in corpus.articles.items()}
+title_choices = {article["index"]:article["titulo"] for article in corpus}
 
 st.title("Trust - Sources")
 
@@ -18,9 +20,9 @@ with st.container(border=True):
     dw_article = st.selectbox('Seleccionar un artículo', (title_choices.keys()), format_func=lambda x: f'{x} - {title_choices.get(x)}')
     
 
-article = corpus.get_article(dw_article)
+article = [art for art in corpus if art["index"] == dw_article][0]
 
-annotation_options = ['automatic'] + list(article.manual_annotations.sources.keys())
+annotation_options = ['automatic'] + list(article["manual_annotations"]["sources"].keys())
 
 with st.container(border=True):
     dw_source_detection = st.selectbox('Seleccionar un método de anotación', (annotation_options))
@@ -37,14 +39,15 @@ with col1:
     #text = article.nlp_annotations.doc["spacy_stanza"]  
     #text = article.nlp_annotations.doc["spacy_stanza"].text   #Modificado en el import.
     #tags = article.nlp_annotations.sources["spacy_stanza"]
-    text = article.cuerpo
+    # text = article.cuerpo
+    text = article["cuerpo"]
     
     if dw_source_detection == "automatic":
-        tags = article.nlp_annotations.sources["stanza"]
+        tags = article["nlp_annotations"]["sources"]["stanza"]
         dw_source_annotation_type = 'complete'
     
     else:
-        tags = article.manual_annotations.sources[dw_source_detection]
+        tags = article["manual_annotations"]["sources"][dw_source_detection]
         dw_source_annotation_type = 'manual'
     #print(tags)
         
@@ -60,7 +63,7 @@ with col1:
     #html = utils.plot_sources(text, tags, annotation_type=dw_source_annotation_type)
     html = utils.plot_sources(text, tags, annotation_type=dw_source_annotation_type)
 
-    st.header(article.titulo)
+    st.header(article["titulo"])
     st.markdown(html, unsafe_allow_html=True)
 
 with col2:

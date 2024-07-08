@@ -2,6 +2,7 @@ from spacy import displacy
 import streamlit as st
 from io import StringIO
 import pickle
+import json
 #from trustmonitor import import_utils
 
 
@@ -21,7 +22,7 @@ def set_data_path(v: int=4):
         #return f"{ROOT}/data/pickle_files/corpus_lavoz_politica_negocios_5_srcs.pkl"
     
     elif v == 4:
-        return 'data/v4/corpus_lavoz_pn_001_04.pkl'
+        return 'data/v4/corpus_lavoz_pn_001_04.json'
     
     return None
 
@@ -42,6 +43,15 @@ def import_corpus_pickle(filepath):
     #             article.nlp_annotations.doc[k] = article.nlp_annotations.doc[k].text
     #         else:
     #             article.nlp_annotations.doc[k] = None
+        
+    return corpus
+
+@st.cache_resource
+def import_corpus_json(filepath):
+    
+    # load json file
+    with open(filepath, "r", encoding="utf8") as f:
+        corpus = json.load(f)
         
     return corpus
 
