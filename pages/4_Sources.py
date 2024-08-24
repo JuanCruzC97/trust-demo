@@ -52,8 +52,8 @@ with col1:
     #print(tags)
         
     
-    n_sources = len(tags)
-    n_sources_con_fuente = len(tags)
+    n_sources = article["nlp_annotations"]["metrics"]["sources"]["num_afirmaciones"]["value"]
+    n_sources_con_fuente = article["nlp_annotations"]["metrics"]["sources"]["num_referenciados"]["value"]
     if n_sources > 0:
         prop_sources_con_fuente = n_sources_con_fuente/n_sources
     else:
@@ -61,10 +61,10 @@ with col1:
     
     
     #html = utils.plot_sources(text, tags, annotation_type=dw_source_annotation_type)
-    html = utils.plot_sources(text, tags, annotation_type=dw_source_annotation_type)
+    tagged_text = utils.plot_sources(text, tags, annotation_type=dw_source_annotation_type)
 
     st.header(article["titulo"])
-    st.markdown(html, unsafe_allow_html=True)
+    st.markdown(tagged_text, unsafe_allow_html=True)
 
 with col2:
     with st.container(border=True):

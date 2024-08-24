@@ -25,42 +25,20 @@ article = [art for art in corpus if art["index"] == dw_article][0]
 #text = article.cuerpo
 text = article["cuerpo"]
 
+adjectivos = article["nlp_annotations"]["adjectives"]["stanza"]
 
-adjectives = []
-doc = article.nlp_annotations.doc["stanza"]
+tagged_text = utils.plot_adjectives(text, adjectivos)
 
-for sentence in doc.sentences:
-    for word in sentence.words:
-        if word.upos == 'ADJ':
-            adejctive_text = word.text
-            adejctive_start = word.start_char
-            adejctive_end = word.end_char
-            adjectives_xpos = word.xpos
-            adjective_features = {}
-            if word.feats is not None:
-                feats = word.feats.split("|")
-                for feat in feats:
-                    key, value = feat.split("=")
-                    adjective_features[key] = value
-            adjectives.append({
-                'text': adejctive_text,
-                'start_char':adejctive_start,
-                'end_char':adejctive_end,
-                'type':f'ADJ-{adjectives_xpos}',
-                'features': adjective_features
-            })
-
-
-html = utils.plot_adjectives(text, adjectives)
-n_adjetivos = len(adjectives)
-prop_adjetivos = n_adjetivos/article.nlp_annotations.doc["stanza"].num_words
+n_adjetivos = article["nlp_annotations"]["metrics"]["adjectives"]["num_adjectives"]["value"]
+n_words = article["nlp_annotations"]["metrics"]["general"]["num_words"]["value"]
+prop_adjetivos = n_adjetivos/n_words
 
 col1, col2 = st.columns([3, 1])
 
 with col1: 
 
-    st.header(article.titulo)
-    st.markdown(html, unsafe_allow_html=True)
+    st.header(article["titulo"])
+    st.markdown(tagged_text, unsafe_allow_html=True)
     
 with col2:
     with st.container(border=True):

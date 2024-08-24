@@ -19,9 +19,11 @@ st.title("Trust - Entities")
 with st.container(border=True):
     dw_article = st.selectbox('Seleccionar un artículo', (title_choices.keys()), format_func=lambda x: f'{x} - {title_choices.get(x)}')
 
-    dw_attribute = st.selectbox('Seleccionar un modalidad de detección', ("Automático", "Manual"))
+    #dw_attribute = st.selectbox('Seleccionar un modalidad de detección', ("Automático", "Manual"))
+    dw_attribute = "Automático"
 
 #article = corpus.get_article(dw_article)
+print([art for art in corpus if art["index"] == dw_article])
 article = [art for art in corpus if art["index"] == dw_article][0]
 
 col1, col2 = st.columns([3, 1])
@@ -40,18 +42,18 @@ with col1:
         tags = article["manual_annotations"]["entities"]
         
     
-    n_entities = len(tags)
+    n_entities = article["nlp_annotations"]["metrics"]["entities"]["num_entidades"]["value"]
     #prop_entities = n_entities/article.nlp_annotations.doc["stanza"].num_words
-    prop_entities_per = sum([e['type'] == 'Persona' for e in tags])/n_entities
-    prop_entities_lug = sum([e['type'] == 'Lugar' for e in tags])/n_entities
-    prop_entities_org = sum([e['type'] == 'Organización' for e in tags])/n_entities
-    prop_entities_misc = sum([e['type'] == 'Misceláneo' for e in tags])/n_entities
+    prop_entities_per = article["nlp_annotations"]["metrics"]["entities"]["num_entidades_persona"]["value"]/n_entities
+    prop_entities_lug = article["nlp_annotations"]["metrics"]["entities"]["num_entidades_lugar"]["value"]/n_entities
+    prop_entities_org = article["nlp_annotations"]["metrics"]["entities"]["num_entidades_organizacion"]["value"]/n_entities
+    prop_entities_misc = article["nlp_annotations"]["metrics"]["entities"]["num_entidades_misc"]["value"]/n_entities
     
-    html = utils.plot_entities(text, tags)   
+    tagged_text = utils.plot_entities(text, tags)   
 
     #st.header(article.titulo)
     st.header(article["titulo"])
-    st.markdown(html, unsafe_allow_html=True)
+    st.markdown(tagged_text, unsafe_allow_html=True)
 
 with col2:
     with st.container(border=True):
