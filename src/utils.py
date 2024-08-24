@@ -22,7 +22,8 @@ def set_data_path(v: int=4):
         #return f"{ROOT}/data/pickle_files/corpus_lavoz_politica_negocios_5_srcs.pkl"
     
     elif v == 4:
-        return 'data/v4/corpus_lavoz_pn_001_04.json'
+        #return 'data/v4/corpus_lavoz_pn_001_04.json'
+        return 'data/v4/corpus_lavoz_pn_001_02.json'
     
     return None
 
@@ -53,6 +54,10 @@ def import_corpus_json(filepath):
     with open(filepath, "r", encoding="utf8") as f:
         corpus = json.load(f)
         
+    # postprocesamiento para el output de corpus con estructura {index: {article}} 
+    # No se necesita cuando pase a [{article}, {}]
+    corpus = [a for a in corpus.values()]
+        
     return corpus
 
 
@@ -80,12 +85,12 @@ def plot_entities(text, entities):
 
 def plot_adjectives(text, adjectives):
     
-    options = {'colors':{a['type']:"#fcba03" for a in adjectives}}
+    options = {'colors':{"ADJ":"#fcba03" for a in adjectives}}
         
     plot_data = {"text": text,
-            "ents": [{'start':a['start_char'], 'end':a['end_char'], 'label':a['type']} for a in adjectives],
-            "title": None
-            }
+                 "ents": [{'start':a['start_char'], 'end':a['end_char'], 'label': "ADJ"} for a in adjectives],
+                 "title": None
+                }
 
     html = displacy.render(plot_data, style="ent", manual=True, jupyter=False, options=options)
     return html
@@ -98,6 +103,20 @@ def plot_entities_sentiment(text, entities):
     
     plot_data = {"text": text,
             "ents": [{'start':a['start_char'], 'end':a['end_char'], 'label':labels[a['sentiment']]} for a in entities],
+            "title": None
+            }
+
+    html = displacy.render(plot_data, style="ent", manual=True, jupyter=False, options=options)
+    return html
+
+
+def plot_sentence_sentiment(text, entities):
+    
+    options = {'colors':{"NEG":"#F95224", "NEU":"#fcba03", "POS":"#22BF51"}}
+    labels = {0:"NEG", 1:"NEU", 2:"POS"}
+    
+    plot_data = {"text": text,
+            "ents": [{'start':a['start_char'], 'end':a['end_char'], 'label':a['label']} for a in entities],
             "title": None
             }
 
