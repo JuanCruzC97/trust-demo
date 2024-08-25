@@ -18,12 +18,10 @@ st.title("Trust - Entities")
 
 with st.container(border=True):
     dw_article = st.selectbox('Seleccionar un artículo', (title_choices.keys()), format_func=lambda x: f'{x} - {title_choices.get(x)}')
-
     #dw_attribute = st.selectbox('Seleccionar un modalidad de detección', ("Automático", "Manual"))
     dw_attribute = "Automático"
 
 #article = corpus.get_article(dw_article)
-print([art for art in corpus if art["index"] == dw_article])
 article = [art for art in corpus if art["index"] == dw_article][0]
 
 col1, col2 = st.columns([3, 1])
