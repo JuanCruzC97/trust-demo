@@ -24,8 +24,8 @@ def set_data_path(v: int=4):
         #return f"{ROOT}/data/pickle_files/corpus_lavoz_politica_negocios_5_srcs.pkl"
     
     elif v == 4:
-        return 'data/v4/corpus_lavoz_pn_001_04.json'
-        #return 'data/v4/corpus_lavoz_pn_001_02.json'
+        #return 'data/v4/corpus_lavoz_pn_001_04.json'
+        return 'data/v4/corpus_lavoz_pn_001_02.json'
     
     return None
 
@@ -150,4 +150,4 @@ def plot_sources(text, sources_list, annotation_type: str="simple"):
     #print(sources_list)
 
     html = displacy.render(plot_data, style="ent", manual=True, jupyter=False, options=options)
-    return html
+    return html   
