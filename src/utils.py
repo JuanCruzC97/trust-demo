@@ -1,8 +1,10 @@
-from spacy import displacy
-import streamlit as st
-from io import StringIO
-import pickle
 import json
+import pickle
+from io import StringIO
+
+import streamlit as st
+from spacy import displacy
+
 #from trustmonitor import import_utils
 
 
