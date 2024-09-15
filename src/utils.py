@@ -24,8 +24,8 @@ def set_data_path(v: int=4):
         #return f"{ROOT}/data/pickle_files/corpus_lavoz_politica_negocios_5_srcs.pkl"
     
     elif v == 4:
-        #return 'data/v4/corpus_lavoz_pn_001_04.json'
-        return 'data/v4/corpus_lavoz_pn_001_02.json'
+        return 'data/v4/corpus_lavoz_pn_001_04.json'
+        #return 'data/v4/corpus_lavoz_pn_001_02.json'
     
     return None
 
@@ -58,7 +58,7 @@ def import_corpus_json(filepath):
         
     # postprocesamiento para el output de corpus con estructura {index: {article}} 
     # No se necesita cuando pase a [{article}, {}]
-    corpus = [a for a in corpus.values()]
+    #corpus = [a for a in corpus.values()]
         
     return corpus
 
