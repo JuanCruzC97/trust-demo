@@ -4,7 +4,8 @@
 En el virtual environment que esta instalado trust-monitor:
 
 ```sh
-pip install streamlit
+cd ...\trust-demo 
+pip install -r requirements.txt
 ```
 
 ## Usage
