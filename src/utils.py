@@ -28,7 +28,7 @@ def set_data_path(v: int=5):
         return 'data/v4/corpus_lavoz_pn_001_02.json'
     
     elif v == 5:
-        return 'data/v5/lavoz_processed_24FEB25.json'
+        return 'data/v5/lavoz_processed_polneg_24FEB25.json'
     
     return None
 
