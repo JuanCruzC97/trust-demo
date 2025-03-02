@@ -13,7 +13,7 @@ from spacy import displacy
 # Por ahora cambiando el default se aplica en todas las páginas.
 # Esto debería ser una variable de configuración.
 @st.cache_resource
-def set_data_path(v: int=4):
+def set_data_path(v: int=5):
     
     if v == 1:
         return 'data/v1/noticias_demo_analizadas.pkl'
@@ -26,6 +26,9 @@ def set_data_path(v: int=4):
     elif v == 4:
         #return 'data/v4/corpus_lavoz_pn_001_04.json'
         return 'data/v4/corpus_lavoz_pn_001_02.json'
+    
+    elif v == 5:
+        return 'data/v5/lavoz_processed_24FEB25.json'
     
     return None
 
@@ -58,7 +61,8 @@ def import_corpus_json(filepath):
         
     # postprocesamiento para el output de corpus con estructura {index: {article}} 
     # No se necesita cuando pase a [{article}, {}]
-    #corpus = [a for a in corpus.values()]
+    if isinstance(corpus, dict):
+        corpus = [a for a in corpus.values()]
         
     return corpus
 
